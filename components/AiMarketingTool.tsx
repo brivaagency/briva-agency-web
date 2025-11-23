@@ -130,7 +130,7 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
                 type="text"
                 value={industry}
                 onChange={(e) => setIndustry(e.target.value)}
-                placeholder="예: 피부과, 치킨집"
+                placeholder="예: 피부과, 패스트푸드"
                 className="w-full px-4 py-3 rounded-lg border border-briva-200 bg-briva-50 focus:ring-2 focus:ring-briva-500 outline-none"
               />
             </div>
