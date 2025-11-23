@@ -19,17 +19,16 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
       setError("모든 정보를 입력해주세요.");
       return;
     }
-    if (!process.env.API_KEY) {
-      setError("API Key is missing.");
-      return;
-    }
+    
+    // Use process.env.API_KEY as per guidelines.
+    // We assume the environment variable is configured and valid.
 
     setLoading(true);
     setError(null);
     setResult(null);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
       
       const prompt = `
         You are a top-tier SEO marketing strategist at 'BRIVA Agency'.
