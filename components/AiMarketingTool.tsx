@@ -20,15 +20,20 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
       return;
     }
     
-    // Use process.env.API_KEY as per guidelines.
-    // We assume the environment variable is configured and valid.
+    // Vercel/Vite environment variable access
+    const apiKey = (import.meta as any).env.VITE_API_KEY;
+
+    if (!apiKey) {
+      setError("API Key is missing. Vercel 환경변수(VITE_API_KEY)를 확인해주세요.");
+      return;
+    }
 
     setLoading(true);
     setError(null);
     setResult(null);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       
       const prompt = `
         You are a top-tier SEO marketing strategist at 'BRIVA Agency'.
@@ -72,7 +77,7 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
 
     } catch (err) {
       console.error(err);
-      setError("AI 분석 중 오류가 발생했습니다.");
+      setError("AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
@@ -144,10 +149,14 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
           <button
             onClick={generatePlan}
             disabled={loading}
-            className="w-full py-4 bg-briva-900 text-white font-bold rounded-xl hover:bg-briva-800 disabled:opacity-50 transition-all flex items-center justify-center gap-2 mb-6"
+            className="w-full py-4 bg-briva-900 text-white font-bold rounded-xl hover:bg-briva-800 disabled:opacity-50 transition-all flex items-center justify-center gap-2 mb-2"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> 10초만에 키워드&슬로건 생성하기</>}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Sparkles className="w-5 h-5" /> 무료 추출하기</>}
           </button>
+          
+          <p className="text-center text-xs text-briva-400 mb-6">
+            ⚡ 10초 안에 생성됩니다.
+          </p>
 
           {error && <div className="text-red-500 text-center text-sm mb-4">{error}</div>}
 
