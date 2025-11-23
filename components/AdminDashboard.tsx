@@ -4,13 +4,13 @@ import { X, Trash2, Calendar, User, Phone, DollarSign, MessageSquare, Lock, LogI
 interface Inquiry {
   id: number;
   date: string;
-  companyName: string; // Updated
-  contactName: string; // New
+  companyName: string;
+  managerName: string; // Changed from contactName to match request
   phone: string;
   channels: string[];
   budget: string;
   message: string;
-  name?: string; // For backward compatibility
+  // name is removed as requested
 }
 
 interface AdminDashboardProps {
@@ -175,7 +175,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                       </div>
                       <div>
                         <span className="text-xs font-bold text-briva-400 block mb-1">업체명</span>
-                        <h3 className="text-lg font-bold text-briva-900">{item.companyName || item.name || '-'}</h3>
+                        <h3 className="text-lg font-bold text-briva-900">
+                          {/* Fallback for backward compatibility using type assertion if needed */}
+                          {item.companyName || (item as any).name || '-'}
+                        </h3>
                       </div>
                     </div>
 
@@ -185,7 +188,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                       </div>
                       <div>
                         <span className="text-xs font-bold text-briva-400 block mb-1">담당자</span>
-                        <h3 className="text-lg font-bold text-briva-900">{item.contactName || '-'}</h3>
+                        <h3 className="text-lg font-bold text-briva-900">
+                           {item.managerName || (item as any).contactName || '-'}
+                        </h3>
                       </div>
                     </div>
                     

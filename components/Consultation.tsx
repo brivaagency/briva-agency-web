@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Send, CheckCircle2 } from 'lucide-react';
 
@@ -19,8 +20,8 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
   const [submitted, setSubmitted] = useState(false);
   
   // Form States
-  const [companyName, setCompanyName] = useState(''); // Split from single name field
-  const [contactName, setContactName] = useState(''); // New field
+  const [companyName, setCompanyName] = useState(''); 
+  const [managerName, setManagerName] = useState(''); // Changed from contactName to managerName
   const [phone, setPhone] = useState('');
   const [channels, setChannels] = useState<string[]>([]);
   const [budget, setBudget] = useState('');
@@ -65,7 +66,7 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
       id: Date.now(),
       date: new Date().toLocaleString('ko-KR'),
       companyName,
-      contactName,
+      managerName, // Saving as managerName
       phone,
       channels,
       budget,
@@ -101,7 +102,7 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
   const handleReset = () => {
     setSubmitted(false);
     setCompanyName('');
-    setContactName('');
+    setManagerName('');
     setPhone('');
     setChannels([]);
     setBudget('');
@@ -170,8 +171,8 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
                   <input 
                     type="text" 
                     required
-                    value={contactName}
-                    onChange={(e) => setContactName(e.target.value)}
+                    value={managerName}
+                    onChange={(e) => setManagerName(e.target.value)}
                     placeholder="예) 홍길동"
                     className="w-full px-4 py-3 rounded-lg bg-briva-50 border border-briva-100 focus:border-briva-500 focus:ring-2 focus:ring-briva-200 outline-none transition-all"
                   />
@@ -234,7 +235,7 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
                   type="submit"
                   className="w-full py-4 bg-briva-600 text-white font-bold rounded-xl hover:bg-briva-700 shadow-lg shadow-briva-500/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
-                  무료 진단 바로 접수하기 <Send size={18} />
+                  원터치 접수 <Send size={18} />
                 </button>
               </form>
             )}
