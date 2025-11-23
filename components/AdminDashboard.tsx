@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { X, Trash2, Calendar, User, Phone, DollarSign, MessageSquare, Lock, LogIn, AlertCircle } from 'lucide-react';
+import { X, Trash2, Calendar, User, Phone, DollarSign, MessageSquare, Lock, LogIn, AlertCircle, Copy, Briefcase } from 'lucide-react';
 
 interface Inquiry {
   id: number;
   date: string;
-  name: string;
+  companyName: string; // Updated
+  contactName: string; // New
   phone: string;
   channels: string[];
   budget: string;
   message: string;
+  name?: string; // For backward compatibility
 }
 
 interface AdminDashboardProps {
@@ -57,6 +59,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
       setInquiries(updated);
       localStorage.setItem('briva_inquiries', JSON.stringify(updated));
     }
+  };
+
+  const handleCopyPhone = (phone: string) => {
+    navigator.clipboard.writeText(phone).then(() => {
+      alert(`연락처가 복사되었습니다: ${phone}`);
+    }).catch(err => {
+      console.error('복사 실패:', err);
+    });
   };
 
   if (!isLoggedIn) {
@@ -128,8 +138,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
 
         {/* Content */}
         <div className="flex-1 overflow-auto p-6 bg-briva-50">
+          <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 flex items-start gap-2">
+            <AlertCircle size={16} className="shrink-0 mt-0.5" />
+            <p>
+              <strong>주의:</strong> 현재 내역은 사용 중인 <strong>이 기기(브라우저)</strong>에만 저장됩니다. <br/>
+              모바일로 접수된 건은 모바일에서, PC로 접수된 건은 PC에서만 확인 가능합니다. (서버 미연동 상태)
+            </p>
+          </div>
+
           {inquiries.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-briva-400">
+            <div className="h-full flex flex-col items-center justify-center text-briva-400 py-10">
               <MessageSquare size={48} className="mb-4 opacity-50" />
               <p className="text-lg">아직 접수된 상담 내역이 없습니다.</p>
             </div>
@@ -137,7 +155,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
             <div className="space-y-4">
               {inquiries.map((item) => (
                 <div key={item.id} className="bg-white p-6 rounded-xl shadow-sm border border-briva-100 hover:shadow-md transition-shadow">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 border-b border-briva-50 pb-4">
                     <div className="flex items-center gap-2 text-sm text-briva-500">
                       <Calendar size={14} />
                       <span className="font-mono">{item.date}</span>
@@ -150,25 +168,46 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                     </button>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6 mb-4">
+                  <div className="grid md:grid-cols-2 gap-y-6 gap-x-8 mb-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-briva-50 flex items-center justify-center text-briva-600 mt-1 shrink-0">
+                        <Briefcase size={16} />
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold text-briva-400 block mb-1">업체명</span>
+                        <h3 className="text-lg font-bold text-briva-900">{item.companyName || item.name || '-'}</h3>
+                      </div>
+                    </div>
+
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-briva-50 flex items-center justify-center text-briva-600 mt-1 shrink-0">
                         <User size={16} />
                       </div>
                       <div>
-                        <span className="text-xs font-bold text-briva-400 block mb-1">업체명 / 성함</span>
-                        <h3 className="text-lg font-bold text-briva-900">{item.name}</h3>
+                        <span className="text-xs font-bold text-briva-400 block mb-1">담당자</span>
+                        <h3 className="text-lg font-bold text-briva-900">{item.contactName || '-'}</h3>
                       </div>
                     </div>
+                    
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-briva-50 flex items-center justify-center text-briva-600 mt-1 shrink-0">
                         <Phone size={16} />
                       </div>
                       <div>
                         <span className="text-xs font-bold text-briva-400 block mb-1">연락처</span>
-                        <h3 className="text-lg font-bold text-briva-900">{item.phone}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-bold text-briva-900 tracking-wide">{item.phone}</h3>
+                          <button 
+                            onClick={() => handleCopyPhone(item.phone)}
+                            className="text-briva-400 hover:text-briva-600 p-1 hover:bg-briva-50 rounded"
+                            title="연락처 복사"
+                          >
+                            <Copy size={14} />
+                          </button>
+                        </div>
                       </div>
                     </div>
+
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 rounded-full bg-briva-50 flex items-center justify-center text-briva-600 mt-1 shrink-0">
                         <DollarSign size={16} />
@@ -178,11 +217,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                         <p className="text-briva-800 font-medium">{item.budget || '미선택'}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    
+                    <div className="flex items-start gap-3 col-span-2">
                       <div className="w-8 h-8 rounded-full bg-briva-50 flex items-center justify-center text-briva-600 mt-1 shrink-0">
                         <MessageSquare size={16} />
                       </div>
-                      <div>
+                      <div className="w-full">
                         <span className="text-xs font-bold text-briva-400 block mb-1">관심 채널</span>
                         <div className="flex flex-wrap gap-2">
                           {item.channels && item.channels.length > 0 ? (

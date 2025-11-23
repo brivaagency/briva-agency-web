@@ -19,7 +19,8 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
   const [submitted, setSubmitted] = useState(false);
   
   // Form States
-  const [name, setName] = useState('');
+  const [companyName, setCompanyName] = useState(''); // Split from single name field
+  const [contactName, setContactName] = useState(''); // New field
   const [phone, setPhone] = useState('');
   const [channels, setChannels] = useState<string[]>([]);
   const [budget, setBudget] = useState('');
@@ -39,6 +40,23 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
     );
   };
 
+  // Auto-hyphenation for phone number
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/[^0-9]/g, '');
+    let formattedValue = rawValue;
+
+    if (rawValue.length > 3 && rawValue.length <= 7) {
+      formattedValue = `${rawValue.slice(0, 3)}-${rawValue.slice(3)}`;
+    } else if (rawValue.length > 7) {
+      formattedValue = `${rawValue.slice(0, 3)}-${rawValue.slice(3, 7)}-${rawValue.slice(7, 11)}`;
+    }
+
+    // Limit to typical max length (010-1234-5678 is 13 chars)
+    if (formattedValue.length <= 13) {
+      setPhone(formattedValue);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -46,7 +64,8 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
     const newInquiry = {
       id: Date.now(),
       date: new Date().toLocaleString('ko-KR'),
-      name,
+      companyName,
+      contactName,
       phone,
       channels,
       budget,
@@ -81,7 +100,8 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
 
   const handleReset = () => {
     setSubmitted(false);
-    setName('');
+    setCompanyName('');
+    setContactName('');
     setPhone('');
     setChannels([]);
     setBudget('');
@@ -106,8 +126,9 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
             </div>
 
             <div className="mt-8 relative z-10">
-              <div className="p-4 bg-briva-800/50 backdrop-blur-sm rounded-xl border border-briva-700 text-sm text-briva-300 leading-relaxed">
-                "망설이는 시간에도 경쟁사는 성장하고 있습니다.<br/>지금 바로 문의하세요."
+              <div className="p-4 bg-briva-800/50 backdrop-blur-sm rounded-xl border border-briva-700 text-sm text-briva-300 leading-relaxed word-keep-all whitespace-pre-line">
+                "망설이는 시간에도 경쟁사는 성장하고 있습니다.<br className="hidden md:block" />
+                지금 바로 문의하세요."
               </div>
             </div>
           </div>
@@ -134,13 +155,24 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-briva-700 mb-2">업체명 / 성함</label>
+                  <label className="block text-sm font-bold text-briva-700 mb-2">업체명</label>
                   <input 
                     type="text" 
                     required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="예) 브리바 컴퍼니 / 홍길동"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="예) 브리바 컴퍼니"
+                    className="w-full px-4 py-3 rounded-lg bg-briva-50 border border-briva-100 focus:border-briva-500 focus:ring-2 focus:ring-briva-200 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-briva-700 mb-2">담당자 성함</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    placeholder="예) 홍길동"
                     className="w-full px-4 py-3 rounded-lg bg-briva-50 border border-briva-100 focus:border-briva-500 focus:ring-2 focus:ring-briva-200 outline-none transition-all"
                   />
                 </div>
@@ -150,8 +182,9 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
                     type="tel" 
                     required
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={handlePhoneChange}
                     placeholder="010-0000-0000"
+                    maxLength={13}
                     className="w-full px-4 py-3 rounded-lg bg-briva-50 border border-briva-100 focus:border-briva-500 focus:ring-2 focus:ring-briva-200 outline-none transition-all"
                   />
                 </div>
@@ -201,7 +234,7 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
                   type="submit"
                   className="w-full py-4 bg-briva-600 text-white font-bold rounded-xl hover:bg-briva-700 shadow-lg shadow-briva-500/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
-                  무료 진단 신청하기 <Send size={18} />
+                  무료 진단 바로 접수하기 <Send size={18} />
                 </button>
               </form>
             )}

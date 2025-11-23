@@ -149,7 +149,7 @@ const App: React.FC = () => {
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center bg-[#FAE100] text-[#3C1E1E] w-14 h-14 md:w-auto md:h-auto md:px-5 md:py-3 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 font-bold gap-2 group border-2 border-white"
       >
         <MessageCircle className="w-6 h-6" fill="#3C1E1E" />
-        <span className="hidden md:inline text-sm">카톡 상담</span>
+        <span className="hidden md:inline text-sm">간편 문의</span>
         <div className="absolute right-0 -top-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></div>
       </a>
 

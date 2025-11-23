@@ -28,7 +28,7 @@ const AiMarketingTool: React.FC<AiMarketingToolProps> = ({ onApply }) => {
     setResult(null);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
       const prompt = `
         You are a top-tier SEO marketing strategist at 'BRIVA Agency'.

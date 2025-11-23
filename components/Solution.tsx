@@ -40,28 +40,28 @@ const Solution: React.FC = () => {
                 검색부터 구매 결정까지 이어지는 완벽한 동선을 설계합니다.
               </p>
               <ul className="space-y-6 text-sm text-briva-100">
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-100">
                   <span className="w-6 h-6 rounded-full bg-[#03C75A]/20 text-[#03C75A] flex items-center justify-center text-xs font-bold shrink-0">01</span>
                   <div>
                     <strong className="block text-white mb-1">브랜드 블로그 운영</strong>
                     <span className="text-briva-400">단순 상위노출이 아닌, 신뢰도를 높여 문의를 부르는 기획형 원고 작성</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-200">
                   <span className="w-6 h-6 rounded-full bg-[#03C75A]/20 text-[#03C75A] flex items-center justify-center text-xs font-bold shrink-0">02</span>
                   <div>
                     <strong className="block text-white mb-1">플레이스 최적화 (SEO)</strong>
                     <span className="text-briva-400">우리 매장이 지역 맛집/명소로 검색되도록 지도 순위 및 정보 최적화</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-300">
                   <span className="w-6 h-6 rounded-full bg-[#03C75A]/20 text-[#03C75A] flex items-center justify-center text-xs font-bold shrink-0">03</span>
                   <div>
                     <strong className="block text-white mb-1">프리미엄 체험단</strong>
                     <span className="text-briva-400">단순 배포가 아닌, 구매 전환율이 높은 인플루언서 매칭 및 가이드</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-400">
                   <span className="w-6 h-6 rounded-full bg-[#03C75A]/20 text-[#03C75A] flex items-center justify-center text-xs font-bold shrink-0">04</span>
                   <div>
                     <strong className="block text-white mb-1">소통 및 평판 관리</strong>
@@ -73,7 +73,7 @@ const Solution: React.FC = () => {
           </div>
 
           {/* Instagram Section */}
-          <div className="relative group rounded-3xl overflow-hidden bg-briva-800 border border-briva-700 hover:border-briva-500 transition-all duration-500 reveal-on-scroll delay-200">
+          <div className="relative group rounded-3xl overflow-hidden bg-briva-800 border border-briva-700 hover:border-briva-500 transition-all duration-500 reveal-on-scroll delay-1000">
              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="p-10 md:p-14">
               <div className="w-14 h-14 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-pink-900/50">
@@ -85,28 +85,28 @@ const Solution: React.FC = () => {
                 잠재 고객의 마음을 사로잡는 트렌디한 콘텐츠를 기획합니다.
               </p>
               <ul className="space-y-6 text-sm text-briva-100">
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-100">
                   <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-500 flex items-center justify-center text-xs font-bold shrink-0">01</span>
                   <div>
                     <strong className="block text-white mb-1">브랜드 공식 계정 운영</strong>
                     <span className="text-briva-400">브랜드 무드에 맞는 톤앤매너 디자인 및 피드 구성</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-200">
                   <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-500 flex items-center justify-center text-xs font-bold shrink-0">02</span>
                   <div>
                     <strong className="block text-white mb-1">계정 최적화</strong>
                     <span className="text-briva-400">탐색 탭 노출 및 타겟 고객 도달률을 높이는 알고리즘 최적화</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-300">
                   <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-500 flex items-center justify-center text-xs font-bold shrink-0">03</span>
                   <div>
                     <strong className="block text-white mb-1">숏폼(릴스) 기획/제작</strong>
                     <span className="text-briva-400">폭발적인 도달을 위한 숏폼 트렌드 분석 및 바이럴 영상 기획</span>
                   </div>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3 reveal-on-scroll delay-400">
                   <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-500 flex items-center justify-center text-xs font-bold shrink-0">04</span>
                   <div>
                     <strong className="block text-white mb-1">인기게시물 상위노출</strong>
