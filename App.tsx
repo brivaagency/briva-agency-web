@@ -63,12 +63,9 @@ const App: React.FC = () => {
   };
 
   const handleOpenAdmin = () => {
-    const password = window.prompt("관리자 비밀번호를 입력하세요 (0000)");
-    if (password === '0000') {
-      setShowAdmin(true);
-    } else if (password !== null) {
-      alert("비밀번호가 일치하지 않습니다.");
-    }
+    // No longer asking for password here via prompt.
+    // Directly open the modal, which handles its own secure login.
+    setShowAdmin(true);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Trash2, Calendar, User, Phone, DollarSign, MessageSquare } from 'lucide-react';
+import { X, Trash2, Calendar, User, Phone, DollarSign, MessageSquare, Lock, LogIn, AlertCircle } from 'lucide-react';
 
 interface Inquiry {
   id: number;
@@ -16,10 +16,24 @@ interface AdminDashboardProps {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
 
-  useEffect(() => {
-    // Load data from local storage on mount
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === '0124') {
+      setIsLoggedIn(true);
+      setLoginError('');
+      loadData();
+    } else {
+      setLoginError('비밀번호가 올바르지 않습니다.');
+      setPasswordInput('');
+    }
+  };
+
+  const loadData = () => {
     const data = localStorage.getItem('briva_inquiries');
     if (data) {
       try {
@@ -28,7 +42,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
         console.error("Failed to parse inquiries", e);
       }
     }
-  }, []);
+  };
+
+  // Effect to reload data if needed when login state changes
+  useEffect(() => {
+    if (isLoggedIn) {
+      loadData();
+    }
+  }, [isLoggedIn]);
 
   const handleDelete = (id: number) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
@@ -37,6 +58,54 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
       localStorage.setItem('briva_inquiries', JSON.stringify(updated));
     }
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-briva-200 p-8 relative">
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 text-briva-400 hover:text-briva-800 transition-colors"
+          >
+            <X size={24} />
+          </button>
+          
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-briva-100 text-briva-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Lock size={32} />
+            </div>
+            <h2 className="text-2xl font-bold text-briva-900">관리자 로그인</h2>
+            <p className="text-briva-500 text-sm mt-2">상담 내역을 확인하려면 비밀번호를 입력하세요.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="비밀번호 입력"
+                className="w-full px-4 py-3 rounded-lg border border-briva-200 bg-briva-50 focus:ring-2 focus:ring-briva-500 outline-none text-center tracking-widest"
+                autoFocus
+              />
+              {loginError && (
+                <div className="flex items-center justify-center gap-1 text-red-500 text-xs mt-2">
+                  <AlertCircle size={12} />
+                  <span>{loginError}</span>
+                </div>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full py-3 bg-briva-900 text-white font-bold rounded-lg hover:bg-briva-800 transition-colors flex items-center justify-center gap-2"
+            >
+              로그인 <LogIn size={18} />
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">

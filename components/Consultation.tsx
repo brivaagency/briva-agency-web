@@ -42,7 +42,7 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create inquiry object
+    // Create inquiry object with timestamp
     const newInquiry = {
       id: Date.now(),
       date: new Date().toLocaleString('ko-KR'),
@@ -53,22 +53,30 @@ const Consultation: React.FC<ConsultationProps> = ({ initialMessage }) => {
       message
     };
 
-    // Save to LocalStorage
+    // Robust Local Storage Saving
     try {
       const existingData = localStorage.getItem('briva_inquiries');
-      const inquiries = existingData ? JSON.parse(existingData) : [];
-      localStorage.setItem('briva_inquiries', JSON.stringify([newInquiry, ...inquiries]));
+      let inquiries = [];
+      if (existingData) {
+        try {
+          inquiries = JSON.parse(existingData);
+          if (!Array.isArray(inquiries)) inquiries = [];
+        } catch (e) {
+          inquiries = [];
+        }
+      }
+      
+      // Add new inquiry to the top
+      const updatedInquiries = [newInquiry, ...inquiries];
+      localStorage.setItem('briva_inquiries', JSON.stringify(updatedInquiries));
+      
+      // Show success UI
+      setSubmitted(true);
+      
     } catch (error) {
       console.error("Failed to save inquiry", error);
-      alert("저장 공간이 부족하거나 오류가 발생했습니다.");
-      return;
+      alert("오류가 발생하여 신청이 저장되지 않았습니다. 브라우저 저장 공간을 확인해주세요.");
     }
-
-    // Show success UI
-    setSubmitted(true);
-    
-    // Reset form fields logic is handled by "다시 작성하기" button or implicit reset if needed, 
-    // but here we keep the state to allow user to see what they submitted or just clear it upon 'Reset' click.
   };
 
   const handleReset = () => {
