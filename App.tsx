@@ -143,7 +143,7 @@ const App: React.FC = () => {
 
       {/* Floating Kakao Button */}
       <a 
-        href="http://pf.kakao.com/_yYYHn" 
+        href="http://pf.kakao.com/_vjEpn/chat" 
         target="_blank" 
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center bg-[#FAE100] text-[#3C1E1E] w-14 h-14 md:w-auto md:h-auto md:px-5 md:py-3 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 font-bold gap-2 group border-2 border-white"
